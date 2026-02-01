@@ -1,37 +1,26 @@
 require("dotenv").config();
 const express = require("express");
-const mongoose = require("mongoose")
 const app = express();
-const connectDB = require("./DB/Connect");
-
-const port = 3000;
-
-const Products_routes = require("./Routes/Products");
+const connectDB = require("./config/db_connect");
+const todoRoute = require("./routes/todoRoute");
 
 
-app.get('/', (request, response) => {
-    return response.json({
-        name: "Hello harsha...",
-        age: '18',
-        city: "Siwan",
-        message: "API is running"
-
-    });
-})
-
-
-app.use("/api/products", Products_routes)
+app.use(express.json({ limit: "4mb" }));
+app.use("/api/v1/todos", todoRoute);
+app.use("/heartbeat", (req, res) => {
+    res.status(200).send({
+        message: "Application is running"
+    })
+});
 
 const start = async () => {
     try {
-        console.log("Before DB connection");
-        await connectDB(process.env.MONGODB_URL);
-        console.log("After DB connection");
-        app.listen(port, () => {
-            console.log("Application is started");
+        await connectDB();
+        app.listen(process.env.PORT || 3000, () => {
+            console.log("index : start : Application is started :", process.env.PORT);
         })
     } catch (err) {
-        console.log("ERROR:", err);
+        console.log("index : start : Application is started :", err);
 
     }
 };
