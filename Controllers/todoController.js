@@ -2,27 +2,27 @@ const Todo = require("../models/todo");
 const getResponse = require("../dto/response");
 
 
-const saveTodo =async (req, res) => {
+const saveTodo = async (req, res) => {
     const response = getResponse();
     try {
         const body = req.body;
-        console.log("body",body);
-        
+        console.log("body", body);
+
         const todo = new Todo({
             title: body.title,
             subject: body.subject,
             description: body.description,
         });
-const savedTodo=await todo.save();
-response.data=savedTodo
+        const savedTodo = await todo.save();
+        response.data = savedTodo
         // response.data = todo.save();
         response.message = "Todo saved successfully...";
         res.status(201).send(response);
     } catch (error) {
         // console.log(("Validation error caught"));
-        const firestError=Object.values(error.errors||{})
+        const firestError = Object.values(error.errors || {})
         [0]?.message;
-        response.message = firestError||"Invalid todo data" 
+        response.message = firestError || "Invalid todo data"
         // error.message;
         res.status(400).send(response);
     }
