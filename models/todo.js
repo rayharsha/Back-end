@@ -4,7 +4,7 @@ const { titleErrorMessage, subjectErrorMessage, descriptionErrorMessage } = requ
 const todoSchema = new mongoose.Schema({
     title: {
         type: String,
-        required: true,
+        required: [true,titleErrorMessage],
         minlength: [10, "Title must be at least 10 characters long"],
         maxlength: 100
     },

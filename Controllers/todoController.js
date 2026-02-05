@@ -27,31 +27,63 @@ const saveTodo = async (req, res) => {
         res.status(400).send(response);
     }
 }
-const editTodo = (req, res) => {
 
+const updateTodo = async (req, res) => {
+    const response = getResponse();
+    const id = req.params.id;
+    const updateData = req.body;
+    try {
+        const updateTodo = await
+            Todo.findByIdAndUpdate(
+                id,
+                updateData,
+                { new: true, runValidators: true }
+            );
 
+        response.data = updateTodo;
+        response.message = "Todo Updated successfully"
+        res.status(200).send(response);
+    } catch (error) {
+        response.message = error.message || "update failed";
+        res.status(400).send(response)
+    }
 }
+const deleteTodo = async (req, res) => {
+     const response = getResponse();
+    const id = req.params.id;
+    try {
+        const deleteTodo = await
+            Todo.findByIdAndDelete(
+                id,
+            )
+        response.message = "Todo deleted successfully"
+        res.status(200).send(response);
+    } catch (error) {
+        response.message = error.message || "todo delete failed"
+        res.status(400).send(response);
+    };
+};
 
-const updateTodo = (req, res) => {
+const getTodos = async (req, res) => {
+    const response = getResponse();
+    try {
+        const todos = await
+            Todo.find();
+        response.data = todos;
+        response.message = "Todos fetched successfully";
 
-
+        res.status(200).send(response);
+        const allTodos = req.body;
+        Todo.find()
+    } catch (error) {
+        response.message = "Failed to fetch todos";
+        res.status(400).send(response);
+    };
 }
-
-const deleteTodo = (req, res) => {
-
-
-}
-
-const getTodos = (req, res) => {
-
-
-}
-
 
 
 module.exports = {
     saveTodo,
-    editTodo,
     updateTodo,
     deleteTodo,
     getTodos
