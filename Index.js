@@ -13,7 +13,7 @@ app.use("/api/v1/todos", todoRoute);
 app.use("/api/v1/auth", authRoutes);
 app.use("/heartbeat", (req, res) => {
     res.status(200).send({
-        message: "Application is running"
+        message: "Application is running.."
     })
 });
 
