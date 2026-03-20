@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
-const { titleErrorMessage, subjectErrorMessage, descriptionErrorMessage } = require("../constants/constants");
+const { titleErrorMessage, subjectErrorMessage, descriptionErrorMessage } = require("../lib/constants");
 
 const todoSchema = new mongoose.Schema({
     title: {
         type: String,
-        required: [true,titleErrorMessage],
+        required: [true, titleErrorMessage],
         minlength: [10, "Title must be at least 10 characters long"],
         maxlength: 100
     },
@@ -13,13 +13,17 @@ const todoSchema = new mongoose.Schema({
         required: [true, subjectErrorMessage],
         minlength: [10, "Subject must be at least 10 characters long"],
         maxlength: 300
-
     },
     description: {
         type: String,
         required: [true, descriptionErrorMessage],
-        minlength: [20, "Description must be at least 20 characters long"],
+        minlength: [10, "Description must be at least 20 characters long"],
         maxlength: 500
+    },
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true
     },
     isActive: {
         type: Boolean,
